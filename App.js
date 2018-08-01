@@ -1,12 +1,59 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import reducer from './reducers'
 import middleware from './middleware'
+import { Constants } from 'expo'
+import { Container, Content, Header, Text, View } from 'native-base';
+import { createStackNavigator } from 'react-navigation';
 import DeckMenu from './components/DeckMenu';
+import Deck from './components/Deck';
+import CardFront from './components/CardFront';
+import DeckNew from './components/DeckNew'
+import CardNew from './components/CardNew'
+import Results from './components/Results'
 
 const store = createStore(reducer, middleware)
+
+function UdaciStatusBar({ backgroundColor, ...props }) {
+  return (
+    <View style={{ backgroundColor, height: Constants.statusBarHeight }}>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </View>
+  )
+}
+
+const Stack = createStackNavigator({
+  DeckMenu: {
+    screen: DeckMenu,
+    navigationOptions: {
+      title: 'DeckMenu',
+      header: null
+    }
+  },
+  Deck: {
+    screen: Deck,
+    navigationOptions: {
+      headerForceInset: { top: 'never'},
+      title: 'Deck',
+    }
+  },
+  CardFront: {
+    screen: CardFront,
+    navigationOptions: {
+      headerForceInset: { top: 'never'},
+      title: 'Card'
+    }
+  },
+  DeckNew: {
+    screen: DeckNew,
+    navigationOptions: {
+      headerForceInset: { top: 'never'},
+      title: 'New Deck'
+    }
+  }
+})
 
 export default class App extends React.Component {
 
@@ -14,18 +61,17 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <DeckMenu/>
+          <UdaciStatusBar backgroundColor={'#777777'} barStyle='light-content' />
+          <Stack />
         </View>
       </Provider>
     );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    backgroundColor: '#007399'
+  }
+}
