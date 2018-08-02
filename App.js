@@ -9,7 +9,7 @@ import { Container, Content, Header, Text, View } from 'native-base';
 import { createStackNavigator } from 'react-navigation';
 import DeckMenu from './components/DeckMenu';
 import Deck from './components/Deck';
-import CardFront from './components/CardFront';
+import Card from './components/Card';
 import DeckNew from './components/DeckNew'
 import CardNew from './components/CardNew'
 import Results from './components/Results'
@@ -37,10 +37,10 @@ const Stack = createStackNavigator({
     navigationOptions: {
       headerForceInset: { top: 'never'},
       title: 'Deck',
-    }
+    },
   },
-  CardFront: {
-    screen: CardFront,
+  Card: {
+    screen: Card,
     navigationOptions: {
       headerForceInset: { top: 'never'},
       title: 'Card'
@@ -51,6 +51,13 @@ const Stack = createStackNavigator({
     navigationOptions: {
       headerForceInset: { top: 'never'},
       title: 'New Deck'
+    }
+  },
+  CardNew: {
+    screen: CardNew,
+    navigationOptions: {
+      headerForceInset: { top: 'never'},
+      title: 'New Card'
     }
   }
 })

@@ -1,34 +1,56 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native'
 import { Button, View, Text } from 'native-base';
+import { addNewDeck } from '../actions/decks';
 
 class DeckNew extends Component {
 
   state = {
-    input: "lalala"
+    input: ""
+  }
+
+  handleTextChange = (input) => {
+    this.setState(() => ({
+      input
+    }))
+  }
+
+  handleSubmit = () => {
+    const input = this.state.input
+    const id = Math.random().toString(36).substring(2, 15)
+    if(input !== ""){
+      this.props.dispatch(addNewDeck(input, id))
+      this.props.navigation.navigate('DeckMenu')
+    }else{
+      alert("Deck name can't be empty")
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <Text style={styles.center}>NEW DECK</Text>
         <Text style={styles.txt}>Choose title for your new deck</Text>
-        <TextInput style={styles.input} />
+        <TextInput
+          value={this.state.input}
+          style={styles.input}
+          onChangeText={(text) => this.handleTextChange(text.toUpperCase())} />
         <Button
           style={styles.btn}
           block
-          warning>
+          warning
+          onPress={this.handleSubmit}>
           <Text style={styles.btnText}>SUBMIT</Text>
         </Button>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 30,
+    paddingTop: 30,
     backgroundColor: '#007399',
     flex: 1,
     alignItems: 'center',

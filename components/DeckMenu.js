@@ -10,16 +10,19 @@ class DeckMenu extends Component {
     this.props.dispatch(handleInitialData())
   }
 
-  handlePress = (id) => {
+  handlePressDeck = (id) => {
     this.props.navigation.navigate( // BARDZO WAZNY MYK - PRZESLANIE PARAMSOW DO KOLEJNEGO KOMPONENTU!!!
-      'Deck',{
+      'Deck', {
         id: id
-      }
+      }, 
     )
   }
 
+  handlePressNew = () => {
+    this.props.navigation.navigate('DeckNew')
+  }
+
   render() {
-    console.log("DECK MENU", this.props)
     const { decks } = this.props
     return (
       <View style={styles.container}>
@@ -28,12 +31,19 @@ class DeckMenu extends Component {
           <Button
             key={key}
             style={styles.btn}
-            onPress={() => this.handlePress(key)}
+            onPress={() => this.handlePressDeck(key)}
             block
             warning>
             <Text style={styles.btnText}>{decks[key].title.toUpperCase()} {decks[key].questions.length}</Text>
           </Button>
         ))}
+        <Button
+          style={styles.btn}
+          onPress={() => this.handlePressNew()}
+          block
+          success>
+          <Text style={styles.btnText}>ADD NEW DECK</Text>
+        </Button>
       </View>
     )
   }
@@ -60,7 +70,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#ffffff',
-    fontSize: 30,
+    fontSize: 40,
     textAlign: 'center',
     fontWeight: 'bold'
   }
