@@ -6,10 +6,11 @@ import { Button, View, Text } from 'native-base';
 class Results extends Component {
 
   render() {
-    const {score, cards} = this.props
+    const {score, cards, deck} = this.props
+    console.log("OOOO", this.props)
     return (
       <View style={styles.container}>
-        <Text style={styles.center}>DECK TITLE</Text>
+        <Text style={styles.center}>{deck}</Text>
         <Text style={styles.center}>YOUR SCORE</Text>
         <Text style={styles.center}>{(100*score/cards).toFixed(2)}%</Text>
       </View>
@@ -52,14 +53,17 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   btnText: {
-    fontSize: 20
+    fontSize: 20,
+    color: '#333333'
   }
 })
 
-function mapStateToProps({ score }, {cards}) {
+function mapStateToProps({ score }, {cards, deck, navigation}) {
   return {
     score,
-    cards
+    cards,
+    deck,
+    navigation
   }
 }
 

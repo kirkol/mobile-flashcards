@@ -15,19 +15,28 @@ class CardFront extends Component {
     setTimeout(() => {
       dispatch(toggleCard("question"))
     }, 500)
-    if(answer === deck.questions[cardNr].answer){
-      dispatch(updateScore(score+1))
+    if (answer === deck.questions[cardNr].answer) {
+      dispatch(updateScore(score + 1))
     }
     dispatch(nextCard(cardNr + 1))
   }
 
+  handleShow = () => {
+    console.log(this.props)
+    this.props.dispatch(toggleCard('dupa'))
+    setTimeout(() => {
+      this.props.dispatch(toggleCard("question"))
+    }, 500)
+  }
+
   render() {
-    const { deck, cardSide, cardNr, score } = this.props
+    const { deck, cardSide, cardNr, score, navigation } = this.props
+    console.log(this.props)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={[styles.box, { flex: 1 }]}>{cardNr}/{deck.questions.length}</Text>
-          <Text style={[styles.box, { alignSelf: 'flex-end' }]}>{(100*cardNr/(deck.questions.length)).toFixed(0)}%</Text>
+          <Text style={[styles.box, { alignSelf: 'flex-end' }]}>{(100 * cardNr / (deck.questions.length)).toFixed(0)}%</Text>
         </View>
         {deck.questions[cardNr]
           ?
@@ -49,12 +58,28 @@ class CardFront extends Component {
                 danger>
                 <Text style={styles.btnText}>FALSE</Text>
               </Button>
+              <Button
+                onPress={() => this.handleShow()}
+                style={[styles.btn, { marginTop: 100 }]}
+                block
+                warning>
+                <Text style={styles.btnText}>SHOW ANSWER</Text>
+              </Button>
             </View>)
             :
-            (<Text style={styles.answerText}> {deck.questions[cardNr-1].answer.toString().toUpperCase()} </Text>))
+            (<Text style={styles.answerText}>
+              {(cardNr-1===-1)
+                ?
+                deck.questions[0].answer.toString().toUpperCase()
+                :
+                (deck.questions[cardNr - 1].answer.toString().toUpperCase())}
+            </Text>))
           :
           (<Results
-            cards={deck.questions.length} />)
+            cards={deck.questions.length}
+            deck={deck.title}
+            //navigation={navigation}
+            />) 
         }
 
       </View>

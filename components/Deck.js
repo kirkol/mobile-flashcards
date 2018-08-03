@@ -1,23 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native' //ActivityIndicator, to krecace sie kolko
 import { Button, View, Text } from 'native-base';
 import { nextCard } from '../actions/cardNr'
 import { updateScore } from '../actions/score'
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 
 class Deck extends Component {
-
-  // componentDidUpdate(){
-  //   this.props.dispatch(nextCard(0))
-  //   this.props.dispatch(updateScore(0))
-  // }
 
   handlePressQuiz = (id) => {
     this.props.navigation.navigate(
       'Card',
       { id: id }
-    ), this.props.dispatch(nextCard(0)),
-      this.props.dispatch(updateScore(0))
+    )
+    this.props.dispatch(nextCard(0))
+    this.props.dispatch(updateScore(0))
+    clearLocalNotification()
+      .then(setLocalNotification())
   }
 
   handlePressNewCard = (id) => {
@@ -29,6 +28,7 @@ class Deck extends Component {
 
   render() {
     const { deck, id } = this.props
+
     return (
       <View style={styles.container}>
         <Text style={styles.center}>{deck.title}</Text>

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { StyleSheet} from 'react-native'
 import { handleInitialData } from '../actions/shared';
 import { Button, Text, Header, View } from 'native-base';
+import { setLocalNotification, clearLocalNotification } from '../utils/helpers';
+import { CheckBox } from 'react-native-elements'
+import { toggleNotfs } from '../actions/notifications';
 
 class DeckMenu extends Component {
 
@@ -14,7 +17,7 @@ class DeckMenu extends Component {
     this.props.navigation.navigate( // BARDZO WAZNY MYK - PRZESLANIE PARAMSOW DO KOLEJNEGO KOMPONENTU!!!
       'Deck', {
         id: id
-      }, 
+      },
     )
   }
 
@@ -22,8 +25,21 @@ class DeckMenu extends Component {
     this.props.navigation.navigate('DeckNew')
   }
 
+  handleClick = () => { // IMPORTANT!!! I DON'T ASK USER FOR PERMISSION, CAUSE Permissions.NOTIFICATIONS DOESN'T SHOW ME ANY POP UP (OTHERS, LIKE CAMERA, LOCATION, ETC. ARE OK)
+    const {dispatch, notifications} = this.props
+    if(!notifications){
+      clearLocalNotification()
+      .then(setLocalNotification())
+      alert('Notification has been set')
+    }else{
+      clearLocalNotification()
+    }
+    dispatch(toggleNotfs(!notifications))
+  }
+
   render() {
-    const { decks } = this.props
+    const { decks, notifications } = this.props
+
     return (
       <View style={styles.container}>
         <Header style={styles.header}><Text style={styles.headerText}>DECK MENU</Text></Header>
@@ -44,6 +60,15 @@ class DeckMenu extends Component {
           success>
           <Text style={styles.btnText}>ADD NEW DECK</Text>
         </Button>
+        <View>
+          <CheckBox
+            containerStyle={styles.btn}
+            right
+            title='Notifications'
+            checked={notifications}
+            onPress={this.handleClick}
+          />
+        </View>
       </View>
     )
   }
@@ -73,13 +98,20 @@ const styles = StyleSheet.create({
     fontSize: 40,
     textAlign: 'center',
     fontWeight: 'bold'
-  }
+  },
+  subtitle: {
+    color: '#ffffff',
+    fontSize: 20,
+    marginTop: 20,
+    marginLeft: 20
+  },
 })
 
-function mapStateToProps({ decks, score }) {
+function mapStateToProps({ decks, score, notifications }) {
   return {
     decks,
-    score
+    score,
+    notifications
   }
 }
 
