@@ -4,11 +4,11 @@ export const decks = {
     questions: [
       {
         question: '56 + 15 = 67',
-        answer: false
+        answer: "wrong"
       },
       {
         question: '78 - 34 = 44',
-        answer: true // łączyć
+        answer: "it's ok" // łączyć
       }
     ]
   },
@@ -17,11 +17,11 @@ export const decks = {
     questions: [
       {
         question: 'snippet = kawałek',
-        answer: true
+        answer: "nope"
       },
       {
         question: 'leg = mózg',
-        answer: false
+        answer: "OK"
       }
     ]
   },
@@ -30,11 +30,11 @@ export const decks = {
     questions: [
       {
         question: 'Does mc^2 give you a velocity?',
-        answer: false
+        answer: "lol, not"
       },
       {
         question: 'F = m * a ?',
-        answer: true
+        answer: "of couse, you little Einstein"
       }
     ]
   }

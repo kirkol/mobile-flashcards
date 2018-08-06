@@ -9,7 +9,7 @@ class DeckNew extends Component {
 
   state = {
     question: "",
-    answer: true
+    answer: ""
   }
 
   handleQuestionText = (text) => {
@@ -18,16 +18,16 @@ class DeckNew extends Component {
     }))
   }
 
-  handleAnswerRadio = (value) => {
+  handleAnswerText = (text) => {
     this.setState(() => ({
-      answer: value
+      answer: text
     }))
   }
 
   handlePress = () => {
     const { question, answer } = this.state
-    const {id} = this.props
-    if (question !== "") {
+    const { id } = this.props
+    if (question !== "" && answer !== "") {
       this.props.dispatch(addNewCard(id, question, answer))
       this.props.navigation.navigate('Deck')
     } else {
@@ -44,46 +44,13 @@ class DeckNew extends Component {
         <TextInput
           style={styles.input}
           onChangeText={(textQuestion) => this.handleQuestionText(textQuestion)}
+          placeholder="your question"
           value={question} />
-        <RadioForm
-          style={styles.radio}
-          formHorizontal={true}
-          animation={true}>
-          <RadioButton>
-            <RadioButtonInput
-              obj={{ label: 'true', value: true }}
-              index={0}
-              isSelected={this.state.answer}
-              onPress={(value) => this.handleAnswerRadio(value)}
-              buttonInnerColor='white'
-              buttonOuterColor='white'
-              buttonSize={20}
-              buttonStyle={{margin: 10}}
-            />
-            <RadioButtonLabel
-              obj={{ label: 'true', value: true }}
-              index={0}
-              onPress={(value) => this.handleAnswerRadio(value)}
-              labelStyle={{ fontSize: 20, color: 'white' }}
-            />
-            <RadioButtonInput
-              obj={{ label: 'false', value: false }}
-              index={1}
-              isSelected={!this.state.answer}
-              onPress={(value) => this.handleAnswerRadio(value)}
-              buttonInnerColor='white'
-              buttonOuterColor='white'
-              buttonSize={20}
-              buttonStyle={{margin: 10}}
-            />
-            <RadioButtonLabel
-              obj={{ label: 'false', value: false }}
-              index={1}
-              onPress={(value) => this.handleAnswerRadio(value)}
-              labelStyle={{ fontSize: 20, color: 'white' }}
-            />
-          </RadioButton>
-        </RadioForm>
+        <TextInput
+          style={styles.input}
+          onChangeText={(textAnswer) => this.handleAnswerText(textAnswer)}
+          placeholder="your answer"
+          value={answer} />
         <Button
           style={styles.btn}
           onPress={this.handlePress}
@@ -91,6 +58,47 @@ class DeckNew extends Component {
           warning>
           <Text style={styles.btnText}>SUBMIT</Text>
         </Button>
+        { // IT'S NOT NEEDED - I WANT TO KEEP THIS SNIPPET FOR THE FUTURE USAGE :) IT'S NICE SAMPLE OF CHECKBOX
+          // <RadioForm
+          //   style={styles.radio}
+          //   formHorizontal={true}
+          //   animation={true}>
+          //   <RadioButton>
+          //     <RadioButtonInput
+          //       obj={{ label: 'true', value: true }}
+          //       index={0}
+          //       isSelected={this.state.answer}
+          //       onPress={(value) => this.handleAnswerRadio(value)}
+          //       buttonInnerColor='white'
+          //       buttonOuterColor='white'
+          //       buttonSize={20}
+          //       buttonStyle={{margin: 10}}
+          //     />
+          //     <RadioButtonLabel
+          //       obj={{ label: 'true', value: true }}
+          //       index={0}
+          //       onPress={(value) => this.handleAnswerRadio(value)}
+          //       labelStyle={{ fontSize: 20, color: 'white' }}
+          //     />
+          //     <RadioButtonInput
+          //       obj={{ label: 'false', value: false }}
+          //       index={1}
+          //       isSelected={!this.state.answer}
+          //       onPress={(value) => this.handleAnswerRadio(value)}
+          //       buttonInnerColor='white'
+          //       buttonOuterColor='white'
+          //       buttonSize={20}
+          //       buttonStyle={{margin: 10}}
+          //     />
+          //     <RadioButtonLabel
+          //       obj={{ label: 'false', value: false }}
+          //       index={1}
+          //       onPress={(value) => this.handleAnswerRadio(value)}
+          //       labelStyle={{ fontSize: 20, color: 'white' }}
+          //     />
+          //   </RadioButton>
+          // </RadioForm>
+        }
       </KeyboardAvoidingView>
     )
   }
@@ -114,14 +122,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: 50
   },
   input: {
     width: 300,
     height: 44,
     padding: 8,
     backgroundColor: '#ffffff',
-    marginTop: 50
+    marginBottom: 20
   },
   btn: {
     padding: 10,

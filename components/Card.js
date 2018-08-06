@@ -7,33 +7,31 @@ import { nextCard } from '../actions/cardNr';
 import Results from './Results'
 import { updateScore } from '../actions/score';
 
-const answer = false;
-
 class CardFront extends Component {
 
-  handleAnswer = (answer) => {
+  handleShowAnswer = () => {
     this.props.dispatch(toggleCard("answer"))
-    this.answer = answer
   }
 
-  handleShow = () => {
-    this.props.dispatch(toggleCard("answer"))
-    setTimeout(() => {
-      this.props.dispatch(toggleCard("question"))
-    }, 500)
+  handleShowQuestion = () => {
+    this.props.dispatch(toggleCard("question"))
   }
 
-  handleNextQuestion = () => {
-    const { dispatch, cardNr, deck, score } = this.props
-      dispatch(toggleCard("question"))
-    if (this.answer === deck.questions[cardNr].answer) {
-      dispatch(updateScore(score + 1))
-    }
-    dispatch(nextCard(cardNr + 1))
+  handleCorrect = () => {
+    const { dispatch, cardNr, score } = this.props
+    dispatch(updateScore(score + 1)) //dodanie punktu
+    dispatch(nextCard(cardNr + 1)) //przerzucenie karty
+    dispatch(toggleCard("question")) //obrocenie na question
+  }
+
+  handleIncorrect = () => {
+    const { dispatch, cardNr } = this.props
+    dispatch(nextCard(cardNr + 1)) //przerzucenie karty
+    dispatch(toggleCard("question")) //obrocenie na question
   }
 
   render() {
-    const { deck, cardSide, cardNr, score, navigation } = this.props
+    const { deck, cardSide, cardNr, navigation } = this.props
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -47,42 +45,56 @@ class CardFront extends Component {
             (<View style={styles.cardContainer}>
               <Text style={styles.cardText}>{deck.questions[cardNr].question}</Text>
               <Button
-                onPress={() => this.handleAnswer(true)}
+                onPress={() => this.handleCorrect()}
                 style={styles.btn}
                 block
                 success>
-                <Text style={styles.btnText}>TRUE</Text>
+                <Text style={styles.btnText}>CORRECT</Text>
               </Button>
               <Button
-                onPress={() => this.handleAnswer(false)}
+                onPress={() => this.handleIncorrect()}
                 style={styles.btn}
                 block
                 danger>
-                <Text style={styles.btnText}>FALSE</Text>
+                <Text style={styles.btnText}>INCORRECT</Text>
               </Button>
               <Button
-                onPress={() => this.handleShow()}
-                style={[styles.btn, { marginTop: 100 }]}
+                onPress={() => this.handleShowAnswer()}
+                style={[styles.btn, { marginTop: 30 }]}
                 block
                 warning>
                 <Text style={styles.btnText}>SHOW ANSWER</Text>
               </Button>
             </View>)
             :
-            (<View>
+            (<View style={styles.cardContainer}> 
               <Text style={styles.answerText}>
                 {(cardNr - 1 === -1)
                   ?
-                  deck.questions[0].answer.toString().toUpperCase()
+                  deck.questions[0].answer.toUpperCase()
                   :
-                  (deck.questions[cardNr - 1].answer.toString().toUpperCase())}
+                  (deck.questions[cardNr].answer.toUpperCase())}
               </Text>
               <Button
-                onPress={() => this.handleNextQuestion()}
-                style={[styles.btn, { marginTop: 100 }]}
+                onPress={() => this.handleCorrect()}
+                style={styles.btn}
+                block
+                success>
+                <Text style={styles.btnText}>CORRECT</Text>
+              </Button>
+              <Button
+                onPress={() => this.handleIncorrect()}
+                style={styles.btn}
+                block
+                danger>
+                <Text style={styles.btnText}>INCORRECT</Text>
+              </Button>
+              <Button
+                onPress={() => this.handleShowQuestion()}
+                style={[styles.btn, { marginTop: 30 }]}
                 block
                 warning>
-                <Text style={styles.btnText}>NEXT QUESTION</Text>
+                <Text style={styles.btnText}>SHOW QUESTION</Text>
               </Button>
             </View>))
           :
@@ -136,8 +148,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   answerText: {
-    marginTop: 80,
-    fontSize: 70,
+    fontSize: 30,
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center'
