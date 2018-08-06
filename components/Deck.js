@@ -32,7 +32,7 @@ class Deck extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.center}>{deck.title}</Text>
-        <Text style={styles.subtitle}>{deck.questions.length}</Text>
+        <Text style={styles.subtitle}>{deck.questions.length} card(s)</Text>
         <Button
           style={styles.btn}
           onPress={() => this.handlePressNewCard(id)}
@@ -40,13 +40,18 @@ class Deck extends Component {
           warning>
           <Text style={styles.btnText}>ADD NEW CARD</Text>
         </Button>
-        <Button
-          style={styles.btn}
-          onPress={() => this.handlePressQuiz(id)}
-          block
-          warning>
-          <Text style={styles.btnText}>START QUIZ</Text>
-        </Button>
+        {deck.questions.length !== 0
+          ?
+          <Button
+            style={styles.btn}
+            onPress={() => this.handlePressQuiz(id)}
+            block
+            warning>
+            <Text style={styles.btnText}>START QUIZ</Text>
+          </Button>
+          :
+          ("")}
+
       </View>
     )
   }

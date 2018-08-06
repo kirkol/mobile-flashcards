@@ -7,31 +7,33 @@ import { nextCard } from '../actions/cardNr';
 import Results from './Results'
 import { updateScore } from '../actions/score';
 
+const answer = false;
+
 class CardFront extends Component {
 
   handleAnswer = (answer) => {
-    const { dispatch, cardNr, deck, score } = this.props
-    dispatch(toggleCard("answer"))
-    setTimeout(() => {
-      dispatch(toggleCard("question"))
-    }, 500)
-    if (answer === deck.questions[cardNr].answer) {
-      dispatch(updateScore(score + 1))
-    }
-    dispatch(nextCard(cardNr + 1))
+    this.props.dispatch(toggleCard("answer"))
+    this.answer = answer
   }
 
   handleShow = () => {
-    console.log(this.props)
-    this.props.dispatch(toggleCard('dupa'))
+    this.props.dispatch(toggleCard("answer"))
     setTimeout(() => {
       this.props.dispatch(toggleCard("question"))
     }, 500)
   }
 
+  handleNextQuestion = () => {
+    const { dispatch, cardNr, deck, score } = this.props
+      dispatch(toggleCard("question"))
+    if (this.answer === deck.questions[cardNr].answer) {
+      dispatch(updateScore(score + 1))
+    }
+    dispatch(nextCard(cardNr + 1))
+  }
+
   render() {
     const { deck, cardSide, cardNr, score, navigation } = this.props
-    console.log(this.props)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -67,19 +69,28 @@ class CardFront extends Component {
               </Button>
             </View>)
             :
-            (<Text style={styles.answerText}>
-              {(cardNr-1===-1)
-                ?
-                deck.questions[0].answer.toString().toUpperCase()
-                :
-                (deck.questions[cardNr - 1].answer.toString().toUpperCase())}
-            </Text>))
+            (<View>
+              <Text style={styles.answerText}>
+                {(cardNr - 1 === -1)
+                  ?
+                  deck.questions[0].answer.toString().toUpperCase()
+                  :
+                  (deck.questions[cardNr - 1].answer.toString().toUpperCase())}
+              </Text>
+              <Button
+                onPress={() => this.handleNextQuestion()}
+                style={[styles.btn, { marginTop: 100 }]}
+                block
+                warning>
+                <Text style={styles.btnText}>NEXT QUESTION</Text>
+              </Button>
+            </View>))
           :
           (<Results
             cards={deck.questions.length}
             deck={deck.title}
-            //navigation={navigation}
-            />) 
+            navigation={navigation}
+          />)
         }
 
       </View>

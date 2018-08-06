@@ -50,7 +50,7 @@ class DeckMenu extends Component {
             onPress={() => this.handlePressDeck(key)}
             block
             warning>
-            <Text style={styles.btnText}>{decks[key].title.toUpperCase()} {decks[key].questions.length}</Text>
+            <Text style={styles.btnText}>{decks[key].title.toUpperCase()} {decks[key].questions.length} card(s)</Text>
           </Button>
         ))}
         <Button

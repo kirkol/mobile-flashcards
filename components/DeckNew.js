@@ -21,7 +21,10 @@ class DeckNew extends Component {
     const id = Math.random().toString(36).substring(2, 15)
     if(input !== ""){
       this.props.dispatch(addNewDeck(input, id))
-      this.props.navigation.navigate('DeckMenu')
+      this.props.navigation.navigate(
+        'Deck', {
+        id: id
+      })
     }else{
       alert("Deck name can't be empty")
     }

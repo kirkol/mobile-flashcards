@@ -26,7 +26,6 @@ class DeckNew extends Component {
 
   handlePress = () => {
     const { question, answer } = this.state
-    console.log(question)
     const {id} = this.props
     if (question !== "") {
       this.props.dispatch(addNewCard(id, question, answer))
@@ -37,7 +36,6 @@ class DeckNew extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { answer, question } = this.props
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>

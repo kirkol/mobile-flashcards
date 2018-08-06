@@ -7,13 +7,19 @@ class Results extends Component {
 
   render() {
     const {score, cards, deck} = this.props
-    console.log("OOOO", this.props)
     return (
       <View style={styles.container}>
         <Text style={styles.center}>{deck}</Text>
         <Text style={styles.center}>YOUR SCORE</Text>
         <Text style={styles.center}>{(100*score/cards).toFixed(2)}%</Text>
-      </View>
+        <Button
+            style={styles.btn}
+            onPress={() => this.props.navigation.navigate('Deck')}
+            block
+            warning>
+            <Text style={styles.btnText}>BACK TO DECK</Text>
+          </Button>
+        </View>
     )
   }
 }
